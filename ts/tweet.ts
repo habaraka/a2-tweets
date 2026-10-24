@@ -26,30 +26,111 @@ class Tweet {
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
         //TODO: identify whether the tweet is written
-        return false;
+        return this.writtenText !== "";
     }
 
-    get writtenText():string {
-        if(!this.written) {
-            return "";
-        }
-        //TODO: parse the written text from the tweet
+    get writtenText():string { //maybe move some of this logic to the top because it will be used for part three
+        var text = this.text;
+
+        text = text.replace(/#Runkeeper/gi, "");
+        text = text.replace(/https?:\/\/\S+/g, "");
+        text = text.trim();
+
+        var parts = text.split(" - ");
+        var writtenText = parts.slice(1).join(" - ").trim();
+
+        if (writtenText === "TomTom MySports Watch" ||
+        writtenText === "Fat Burner (level 9)") {
         return "";
-    }
+        }
 
+        return writtenText;
+    }
     get activityType():string {
         if (this.source != 'completed_event') {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        return "";
+
+        var text = this.text.toLowerCase();
+
+        var end = text.indexOf(" - ");
+        if (end !== -1) {
+            text = text.substring(0, end);
+        }
+
+        if (text.indexOf(" nordic walk") !== -1) {
+            return "nordic walk";
+        }
+        if (text.indexOf(" mtn bike ") !== -1) {
+            return "mtn bike";
+        }
+        if(text.indexOf(" walk ") !== -1){
+            return "walk";
+        }
+        if(text.indexOf(" run ") !== -1){
+            return "run";
+        }
+        if(text.indexOf(" bike ") !== -1){
+            return "bike";
+        }
+        if(text.indexOf(" hike ") !== -1){
+            return "hike";
+        }
+        if(text.indexOf(" swim ") !== -1){
+            return "swim";
+        }
+        if(text.indexOf(" row ") !== -1){
+            return "row";
+        }
+        if (text.indexOf(" elliptical ") !== -1) {
+            return "elliptical";
+        }
+        if (text.indexOf(" yoga ") !== -1) {
+            return "yoga";
+        }
+        if (text.indexOf(" skate ") !== -1) {
+            return "skate";
+        }
+        if (text.indexOf(" snowboard ") !== -1) {
+            return "snowboard";
+        }
+
+
+        return "unknown";
+
     }
 
-    get distance():number {
-        if(this.source != 'completed_event') {
+    get distance():number { //maybe fix calculation
+        if(this.source != 'completed_event' ) {
             return 0;
         }
         //TODO: prase the distance from the text of the tweet
+        var text = this.text;
+
+        var end = text.indexOf(" - ");
+        if (end !== -1) {
+            text = text.substring(0, end);
+        }
+
+        var words = text.split(" ");
+
+        var km_index = words.indexOf("km");
+        var mi_index = words.indexOf("mi");
+
+        if(km_index !== -1){
+            var km_num = words[km_index - 1];
+            var km = parseFloat(km_num);
+            var miles = km / 1.609;
+            return miles;
+        }
+
+        if(mi_index !== -1){
+            var mi_num = words[mi_index - 1];
+            var miles = parseFloat(mi_num);
+            return miles;
+        }
+
         return 0;
     }
 
