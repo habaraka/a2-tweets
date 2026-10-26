@@ -7,7 +7,7 @@ function parseTweets(runkeeper_tweets) {
 
 
 
-	tweet_array = runkeeper_tweets.map(function(tweet) {
+	var tweet_array = runkeeper_tweets.map(function(tweet) {
 		return new Tweet(tweet.text, tweet.created_at);
 	});
 

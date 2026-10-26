@@ -146,7 +146,7 @@ function parseTweets(runkeeper_tweets) {
 
 	});
 	
-	activity_vis_spec = {
+	var activity_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 	  "description": "A graph of the number of Tweets containing each type of activity.",
 	  "data": {
@@ -163,10 +163,10 @@ function parseTweets(runkeeper_tweets) {
 
 	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.
-	distance_vis_spec = {
+	var distance_vis_spec = {
 	  "width": 250,
       "height": 250,
-	  
+
 	  "description": "A graph of the number of Tweets containing each type of activity.",
 	  "data": {"values": activityDayData},
 	  "mark": {"type": "point"},
@@ -188,7 +188,7 @@ function parseTweets(runkeeper_tweets) {
 	
 	
 	
-	Meandistance_vis_spec = {
+	var Meandistance_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 
 	  "width": 250,
@@ -227,16 +227,6 @@ function parseTweets(runkeeper_tweets) {
 		}
 
 	});
-
-
-	
-	
-
-	
-
-
-	
-
 
 	//website connection
 

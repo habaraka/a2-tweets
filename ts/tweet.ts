@@ -38,6 +38,7 @@ class Tweet {
 
         var parts = text.split(" - ");
         var writtenText = parts.slice(1).join(" - ").trim();
+        
 
         if (writtenText === "TomTom MySports Watch" ||
         writtenText === "Fat Burner (level 9)") {
@@ -58,6 +59,8 @@ class Tweet {
         if (end !== -1) {
             text = text.substring(0, end);
         }
+
+        text = text + " ";
 
         if (text.indexOf(" nordic walk") !== -1) {
             return "nordic walk";
@@ -135,7 +138,42 @@ class Tweet {
     }
 
     getHTMLTableRow(rowNumber:number):string {
-        //TODO: return a table row which summarizes the tweet with a clickable link to the RunKeeper activity
-        return "<tr></tr>";
+        var text = this.text;
+
+        function escapeHTML(value:string):string {
+            return value.replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#39;");
+        }
+
+        var start = text.indexOf("https://");
+        var tweetHTML = escapeHTML(text);
+
+        if (start !== -1) {
+            var end = text.indexOf(" ", start);
+
+            if (end === -1) {
+                end = text.length;
+            }
+
+            var url = text.substring(start, end);
+
+            var link = '<a href="' + escapeHTML(url) + '">' +
+                    escapeHTML(url) + '</a>';
+
+            tweetHTML = escapeHTML(text.substring(0, start)) +
+                        link +
+                        escapeHTML(text.substring(end));
+        }
+
+        var row = "<tr>";
+        row += "<td>" + rowNumber + "</td>";
+        row += "<td>" + escapeHTML(this.activityType) + "</td>";
+        row += "<td>" + tweetHTML + "</td>";
+        row += "</tr>";
+
+        return row;
     }
 }
